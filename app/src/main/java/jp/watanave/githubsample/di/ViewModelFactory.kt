@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity
 import dagger.MapKey
 import javax.inject.Inject
 import javax.inject.Provider
+import javax.inject.Singleton
 import kotlin.reflect.KClass
 
 @Target(AnnotationTarget.FUNCTION)
@@ -21,16 +22,12 @@ class ViewModelFactory @Inject constructor(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        var creator: Provider<ViewModel>? = creators[modelClass]
-        if (creator == null) {
-            for ((key, value) in creators) {
-                if (modelClass.isAssignableFrom(key)) {
-                    creator = value
-                    break
-                }
-            }
-        }
-        if (creator == null) throw IllegalArgumentException("unknown model class " + modelClass)
+        val creator: Provider<ViewModel> = creators[modelClass]
+            ?: creators.entries
+                .firstOrNull { (key, _) -> modelClass.isAssignableFrom(key) }
+                ?.value
+            ?: throw IllegalArgumentException("unknown model class $modelClass")
+
         try {
             return creator.get() as T
         } catch (e: Exception) {

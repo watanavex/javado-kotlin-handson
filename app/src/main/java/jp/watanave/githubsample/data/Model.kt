@@ -3,15 +3,17 @@ package jp.watanave.githubsample.data
 data class RepositoryResponse(
     val items: List<Repository>
 )
+
 data class Repository(
-    val id: String,
+    val id: Int,
     val name: String,
     val fullName: String,
-    val htmlUrl: String
+    val owner: RepositoryOwner,
+    val description: String
 )
 
-data class ReposittoryOwner(
+data class RepositoryOwner(
     val login: String,
     val id: Int,
-    val avatarUrl: Int
+    val avatarUrl: String
 )
