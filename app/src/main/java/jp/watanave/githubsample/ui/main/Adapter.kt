@@ -33,7 +33,7 @@ class RepositoryListAdapter: RecyclerView.Adapter<RepositoryListAdapter.ViewHold
         return ViewHolder(binding).also { viewHolder ->
             binding.root.clicks()
                 .map { viewHolder.adapterPosition }
-                .map(repositories::get)
+                .map { this.repositories[it] }
                 .subscribe(this.itemClickSubject)
         }
     }

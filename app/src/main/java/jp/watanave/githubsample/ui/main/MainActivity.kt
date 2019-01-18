@@ -36,9 +36,7 @@ class MainActivity : DaggerAppCompatActivity() {
     private val compositeDisposable = CompositeDisposable()
     private val adapter = RepositoryListAdapter()
     private val store: MainStore by lazy {
-        this.viewModelFactory.get(this, MainStore::class).also {
-            Log.i("@@@ Activity", "store $it")
-        }
+        this.viewModelFactory.get(this, MainStore::class)
     }
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
@@ -64,7 +62,6 @@ class MainActivity : DaggerAppCompatActivity() {
         this.store.repositorySearchResult
             .nonNull()
             .observe(this) {
-                Log.i("@@@ Activity", "repositorySearchResult")
                 this.adapter.refreshData(it)
             }
         this.store.loadingStateChanged

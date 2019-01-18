@@ -32,7 +32,7 @@ class DetailDialogFragment: DialogFragment() {
     lateinit var binding: DialogDetailBinding
     private val store: MainStore by lazy {
         this.viewModelFactory.get(this.activity!!, MainStore::class).also {
-            Log.i("@@@ Activity", "store $it")
+            Log.i("@@@ Fragment", "store $it")
         }
     }
 
@@ -55,8 +55,11 @@ class DetailDialogFragment: DialogFragment() {
         this.store.repositorySearchResult
             .nonNull()
             .observe(this) { repositories ->
-                Log.i("@@@ Fragment", "repositorySearchResult")
-                val repository = repositories.first { it.id == repoId }
+                val repository = repositories.firstOrNull { it.id == repoId }
+                if (repository == null) {
+                    Log.i("@@@ Fragment", "null !!!!")
+                    return@observe
+                }
                 this.binding.repoNameTextView.text = repository.name
                 this.binding.ownerNameTextView.text = repository.owner.login
                 this.binding.descTextView.text = repository.description
