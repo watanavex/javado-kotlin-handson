@@ -1,18 +1,21 @@
 package jp.watanave.githubsample.flux
 
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.Flowable
+import io.reactivex.processors.PublishProcessor
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Dispatcher {
+@Singleton
+class Dispatcher @Inject constructor() {
 
-    private val actionSubject = PublishSubject.create<Action>()
-    val actionObservable: Observable<Action> = this.actionSubject.hide()
+    private val actionProcessor = PublishProcessor.create<Action>()
+    val actionObservable: Flowable<Action> = this.actionProcessor.hide()
 
     fun dispatch(action: Action) {
-        this.actionSubject.onNext(action)
+        this.actionProcessor.onNext(action)
     }
 
-    inline fun <reified T: Action> actionPublisher(): Observable<T> {
+    inline fun <reified T: Action> actionPublisher(): Flowable<T> {
         return this.actionObservable.hide()
             .filter { it is T }
             .map { it as T }
