@@ -1,11 +1,11 @@
 package jp.watanave.githubsample.ui.main
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import android.content.Context
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.Editable
 import android.util.Log
 import android.view.View
@@ -44,8 +44,13 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private fun setupRecyclerView() {
         this.binding.recyclerView.adapter = this.adapter
-        this.binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        this.binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        this.binding.recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        this.binding.recyclerView.addItemDecoration(
+            androidx.recyclerview.widget.DividerItemDecoration(
+                this,
+                androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+            )
+        )
         this.adapter.itemClickPublisher
             .subscribe {
                 val fragment = DetailDialogFragment.newInstance(it.id)

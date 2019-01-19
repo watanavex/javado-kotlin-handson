@@ -1,7 +1,7 @@
 package jp.watanave.githubsample.ui.main
 
-import android.databinding.DataBindingUtil
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jakewharton.rxbinding3.view.clicks
@@ -11,7 +11,7 @@ import jp.watanave.githubsample.R
 import jp.watanave.githubsample.data.Repository
 import jp.watanave.githubsample.databinding.RepositoryItemBinding
 
-class RepositoryListAdapter: RecyclerView.Adapter<RepositoryListAdapter.ViewHolder>() {
+class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<RepositoryListAdapter.ViewHolder>() {
 
     private var repositories = emptyList<Repository>()
     private val itemClickSubject = PublishSubject.create<Repository>()
@@ -45,10 +45,10 @@ class RepositoryListAdapter: RecyclerView.Adapter<RepositoryListAdapter.ViewHold
         holder.binding.textView.text = repo.name
     }
 
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+    override fun onDetachedFromRecyclerView(recyclerView: androidx.recyclerview.widget.RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
         this.itemClickSubject.onComplete()
     }
 
-    class ViewHolder(val binding: RepositoryItemBinding): RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: RepositoryItemBinding): androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root)
 }

@@ -1,10 +1,10 @@
 package jp.watanave.githubsample.ui.main
 
 import android.app.Dialog
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
+import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
 import com.shopify.livedataktx.nonNull
@@ -16,7 +16,7 @@ import jp.watanave.githubsample.databinding.DialogDetailBinding
 import jp.watanave.githubsample.di.ViewModelFactory
 import javax.inject.Inject
 
-class DetailDialogFragment: DialogFragment() {
+class DetailDialogFragment: androidx.fragment.app.DialogFragment() {
     companion object {
         private const val ARG_KEY_REPO_ID = "ARG_KEY_REPO_ID"
         fun newInstance(repositoryId: Int): DetailDialogFragment {
