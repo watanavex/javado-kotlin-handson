@@ -1,10 +1,10 @@
 package jp.watanave.githubsample.di
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import dagger.MapKey
 import javax.inject.Inject
 import javax.inject.Provider
@@ -35,9 +35,9 @@ class ViewModelFactory @Inject constructor(
         }
     }
 
-    fun <T : ViewModel> get(activity: FragmentActivity, modelClass: KClass<T>) =
+    fun <T : ViewModel> get(activity: androidx.fragment.app.FragmentActivity, modelClass: KClass<T>) =
         ViewModelProviders.of(activity, this).get(modelClass.java)
 
-    fun <T : ViewModel> get(fragment: Fragment, modelClass: KClass<T>) =
+    fun <T : ViewModel> get(fragment: androidx.fragment.app.Fragment, modelClass: KClass<T>) =
         ViewModelProviders.of(fragment, this).get(modelClass.java)
 }

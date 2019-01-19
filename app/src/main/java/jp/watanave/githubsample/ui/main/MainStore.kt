@@ -1,7 +1,7 @@
 package jp.watanave.githubsample.ui.main
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import jp.watanave.githubsample.data.Repository
 import jp.watanave.githubsample.flux.Action
 import jp.watanave.githubsample.flux.Dispatcher
