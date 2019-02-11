@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
-import com.squareup.picasso.Picasso
 import jp.watanave.githubsample.R
 import jp.watanave.githubsample.databinding.DialogDetailBinding
+import jp.watanave.githubsample.util.setImageSource
 
 class DetailDialogFragment: androidx.fragment.app.DialogFragment() {
 
@@ -43,9 +43,7 @@ class DetailDialogFragment: androidx.fragment.app.DialogFragment() {
         binding.repoNameTextView.text = this.arguments?.getString(KEY_REPOSITORY_NAME)
         binding.ownerNameTextView.text = this.arguments?.getString(KEY_REPOSITORY_OWNER)
         binding.descTextView.text = this.arguments?.getString(KEY_REPOSITORY_DESCRIPTION)
-        this.arguments?.getString(KEY_REPOSITORY_AVATAR_URL)?.let { url ->
-            Picasso.get().load(url).into(binding.imageView)
-        }
+        binding.imageView.setImageSource(this.arguments?.getString(KEY_REPOSITORY_AVATAR_URL))
 
         return builder.create()
     }

@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
          */
 
         /*
-        Apiのsearchメソッドでgithubリポジトリを検索する
+        GithubSerachApiのsearchメソッドでgithubリポジトリを検索する
         Apiのインスタンスはアプリケーションクラスから取得可能
         */
 
@@ -53,13 +53,6 @@ class MainActivity : AppCompatActivity() {
         バックグラウンドスレッドはKotlinのCoroutineを使うと便利
         GlobalScope.launch に続けてラムダを書くとバックグラウンドスレッドで実行される
         runOnUiThread に続けてラムダを書くとメインスレッドで実行される
-         */
-
-        /*
-        Api#searchの戻り値はCall型
-        Callのexecuteを呼び出すとApiリクエストが走る
-        Call#executeの戻り値はResponse型
-        Responseのbody#itemsからList<Repository>型の結果が取得できる
          */
 
         /*
