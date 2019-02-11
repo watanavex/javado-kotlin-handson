@@ -74,7 +74,7 @@ class PracticeTest {
 
         /* Javaで書くなら...
 
-        CarStatus checkSpeed(Car car) throws Exception {
+        CarStatus checkSpeed(Car car) {
             if (car.getSpeed() < 0) {
                 throw new Exception();
             }
@@ -109,6 +109,7 @@ class PracticeTest {
         val car = mockk<Car>()
         val practice = Practice()
         // Practice#checkSpeed2を実装してみましょう (今度はWhenを使ってみましょう)
+        // ヒント: https://kotlinlang.org/docs/reference/control-flow.html
 
         // car.getSpeed()が29だったら？
         every { car.getSpeed() } returns 29
