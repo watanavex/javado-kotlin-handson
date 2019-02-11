@@ -1,12 +1,8 @@
 package jp.watanave.githubsample.ui.main
 
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.jakewharton.rxbinding3.view.clicks
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import androidx.databinding.DataBindingUtil
 import jp.watanave.githubsample.R
 import jp.watanave.githubsample.data.Repository
 import jp.watanave.githubsample.databinding.RepositoryItemBinding
@@ -14,9 +10,11 @@ import jp.watanave.githubsample.databinding.RepositoryItemBinding
 class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<RepositoryListAdapter.ViewHolder>() {
 
     private var repositories = emptyList<Repository>()
-    private val itemClickSubject = PublishSubject.create<Repository>()
-    val itemClickPublisher: Observable<Repository>
-        get() = this.itemClickSubject.hide()
+
+    // TODO: [2] リストビューのアイテムがタップされた時のコールバックを登録できるようにする
+    /*
+    Repository型を引数に受ける関数型をプロパティで定義しておく
+    */
 
     fun refreshData(repositories: List<Repository>) {
         this.repositories = repositories
@@ -30,12 +28,15 @@ class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<R
             parent,
             false
         )
-        return ViewHolder(binding).also { viewHolder ->
-            binding.root.clicks()
-                .map { viewHolder.adapterPosition }
-                .map { this.repositories[it] }
-                .subscribe(this.itemClickSubject)
+
+        val viewHolder = ViewHolder(binding)
+        binding.root.setOnClickListener {
+            val index = viewHolder.adapterPosition
+            val repository = this.repositories[index]
+            // TODO: [3] 2で定義したコールバックを呼び出す
         }
+
+        return viewHolder
     }
 
     override fun getItemCount(): Int = this.repositories.size
@@ -43,11 +44,6 @@ class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<R
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val repo = this.repositories[position]
         holder.binding.textView.text = repo.name
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: androidx.recyclerview.widget.RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        this.itemClickSubject.onComplete()
     }
 
     class ViewHolder(val binding: RepositoryItemBinding): androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root)

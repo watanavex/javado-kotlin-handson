@@ -10,3 +10,4 @@ interface Api {
     fun search(@Query("q") query: String): Call<RepositoryResponse>
 
 }
+
