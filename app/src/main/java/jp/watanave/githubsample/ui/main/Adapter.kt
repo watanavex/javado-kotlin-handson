@@ -11,7 +11,7 @@ class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<R
 
     private var repositories = emptyList<Repository>()
 
-    // TODO: [2] リストビューのアイテムがタップされた時のコールバックを登録できるようにする
+    // TODO: [4] リストビューのアイテムがタップされた時のコールバックを登録できるようにする
     /*
     Repository型を引数に受ける関数型をプロパティで定義しておく
     */
@@ -33,7 +33,7 @@ class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<R
         binding.root.setOnClickListener {
             val index = viewHolder.adapterPosition
             val repository = this.repositories[index]
-            // TODO: [3] 2で定義したコールバックを呼び出す
+            // TODO: [5] 2で定義したコールバックを呼び出す
         }
 
         return viewHolder

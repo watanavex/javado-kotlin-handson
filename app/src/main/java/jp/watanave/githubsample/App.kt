@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class App: Application() {
     companion object {
-        var instance: App? = null; private set
+        lateinit var instance: App; private set
     }
 
     val api: Api by lazy {
