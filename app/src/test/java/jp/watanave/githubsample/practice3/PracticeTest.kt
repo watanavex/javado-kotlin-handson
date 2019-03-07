@@ -43,6 +43,7 @@ class PracticeTest {
 
     @Test
     fun `ラムダ式を試してみる`() {
+        /*** write here  ***/
         // 上で定義したhello関数と同じことラムダ式で実装してみる
 
         /* Javaで書くなら...

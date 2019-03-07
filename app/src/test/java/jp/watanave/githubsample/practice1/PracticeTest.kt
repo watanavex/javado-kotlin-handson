@@ -9,6 +9,7 @@ class PracticeTest {
 
     @Test
     fun `変数を宣言してみる`() {
+        /*** write here  ***/
         // numという名前のInt型の変数を宣言してみる
         // numは代入できない宣言にしてみる
 
@@ -23,6 +24,7 @@ class PracticeTest {
 
     @Test
     fun `変数を宣言してみる2`() {
+        /*** write here  ***/
         // numという名前のInt型の変数を宣言してみる
         // numは再代入できる宣言にしましょう
 
@@ -38,6 +40,7 @@ class PracticeTest {
 
     @Test
     fun `型推論を試してみる`() {
+        /*** write here  ***/
 //        val intValue = // Intのリテラルを書く
 //        val longValue = // Longのリテラルを書く
 //        val stringValue = // Stringのリテラルを書く
@@ -49,6 +52,7 @@ class PracticeTest {
 
     @Test
     fun `型推論を試してみる2`() {
+        /*** write here  ***/
         val practice = Practice()
 
         // Practice#getNumの戻り値をnumという変数に代入してみる
@@ -126,6 +130,7 @@ class PracticeTest {
 
     @Test
     fun `コレクションを扱ってみる`() {
+        /*** write here  ***/
         // (0, 2, 4)を要素に持つIntのListを宣言してみる
 
         /* Javaで書くなら...
@@ -141,6 +146,7 @@ class PracticeTest {
 
     @Test
     fun `コレクションを扱ってみる2`() {
+        /*** write here  ***/
         // 変更可能なIntのListを宣言してみる
         // 要素0, 2, 4を追加してみる
 

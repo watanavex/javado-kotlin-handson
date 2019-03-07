@@ -6,6 +6,7 @@ import org.junit.Test
 class PracticeTest {
     @Test
     fun `letやrunを試してみる`() {
+        /*** write here  ***/
         val view = View.createSample()
         val firstChildren = view.childView
 
@@ -23,6 +24,7 @@ class PracticeTest {
 
     @Test
     fun `applyとalsoを試してみる2`() {
+        /*** write here  ***/
         // 下のテストが通るように、
         // hiddenFirstChildを書き換えてみる
 
