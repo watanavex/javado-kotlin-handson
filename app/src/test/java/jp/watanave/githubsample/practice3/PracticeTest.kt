@@ -24,7 +24,7 @@ class PracticeTest {
     }
 
     @Test
-    fun `デフォルト引数をを定義してみる`() {
+    fun `デフォルト引数を定義してみる`() {
         // デフォルト引数を指定してみる
         // 上のhello関数のデフォルト引数をWorldにしてみる
 
@@ -65,20 +65,6 @@ class PracticeTest {
         // includeTaxを定義してみましょう
 
 //        Assert.assertEquals(100.includeTax(), 108)
-    }
-
-    @Test
-    fun `おまけ_inline関数の実験1`() {
-        for (i in (0..1_000_000_000)) {
-            inline(i) { it + it }
-        }
-
-    }
-    @Test
-    fun `おまけ_inline関数の実験2`() {
-        for (i in (0..1_000_000_000)) {
-            notInline(i) { it + it }
-        }
     }
 }
 

@@ -24,7 +24,6 @@ class PracticeTest {
 
     @Test
     fun `applyとalsoを試してみる2`() {
-        /*** write here  ***/
         // 下のテストが通るように、
         // hiddenFirstChildを書き換えてみる
 
