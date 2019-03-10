@@ -25,11 +25,10 @@ class MainActivity : AppCompatActivity() {
             )
         )
         // TODO: [6] 2で定義したコールバックを登録する
-        // コールバックの中では、ダイアログを出す
-        /* こんな感じ
+        this.adapter.onClickItem = { repository ->
             val fragment = DetailDialogFragment.newInstance(repository.name, repository.owner.login, repository.description, repository.owner.avatarUrl)
             fragment.show(this.supportFragmentManager, DetailDialogFragment::class.simpleName)
-         */
+        }
     }
 
     // 画面が作成された時にシステムから呼び出されるコールバックです
@@ -45,6 +44,9 @@ class MainActivity : AppCompatActivity() {
         ボタンがタップされたらsearchRepositoryメソッドを呼びましょう
         検索文字列はthis.editTextから取得します
          */
+        this.searchButton.setOnClickListener {
+            this.searchRepository(this.editText.text.toString())
+        }
     }
 
     private fun searchRepository(searchWord: String) {
@@ -60,12 +62,23 @@ class MainActivity : AppCompatActivity() {
             /*
             Apiのsearchメソッドでgithubリポジトリを検索する
             検索結果をadapterに渡しましょう
-             */
+            */
+            val response = api.search(searchWord).execute()
+            val body = response.body()
+            if (!response.isSuccessful || body == null) {
+                // エラー処理
+                return@launch
+            }
+            val repositories = body.items
             runOnUiThread {
-                adapter.refreshData(emptyList())
+                adapter.refreshData(repositories)
             }
 
             // TODO: [3] 検索が完了したらprogressBarを隠してrecyclerViewを表示しましょう
+            runOnUiThread {
+                recyclerView.visibility = View.VISIBLE
+                progressBar.visibility = View.INVISIBLE
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<R
     /*
     Repository型を引数に受ける関数型をプロパティで定義しておく
     */
+    var onClickItem: ((Repository)->Unit)? = null
 
     fun refreshData(repositories: List<Repository>) {
         this.repositories = repositories
@@ -34,6 +35,7 @@ class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<R
             val index = viewHolder.adapterPosition
             val repository = this.repositories[index]
             // TODO: [5] 2で定義したコールバックを呼び出す
+            this.onClickItem?.invoke(repository)
         }
 
         return viewHolder
