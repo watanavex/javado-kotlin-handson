@@ -14,12 +14,19 @@ class PracticeTest {
         if (firstChildren != null) {
             firstChildren.isHidden = true
         }
+        firstChildren?.let {
+            it.isHidden = true
+        }
+        firstChildren?.run {
+            this.isHidden = true
+        }
     }
 
     @Test
     fun `applyとalsoを試してみる1`() {
         // View.createSample()をapplyやalsoを使って書き換えてみる
         val view = View.createSample()
+        Assert.assertNotNull(view.childView)
     }
 
     @Test

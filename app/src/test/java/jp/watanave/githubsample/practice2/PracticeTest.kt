@@ -18,7 +18,7 @@ class PracticeTest {
         }
 
         */
-//        Assert.assertTrue(Person::class.java is Any)
+        Assert.assertTrue(Person::class.java is Any)
     }
 
     @Test
@@ -57,19 +57,19 @@ class PracticeTest {
 
         */
 
-//        val firstName = Person::class.memberProperties.firstOrNull { it.name == "firstName" }
-//        Assert.assertNotNull(firstName)
-//        Assert.assertFalse(firstName is KMutableProperty1)
-//        Assert.assertEquals(firstName!!.returnType.javaType.typeName, "java.lang.String")
-//
-//        val lastName = Person::class.memberProperties.firstOrNull { it.name == "lastName" }
-//        Assert.assertNotNull(lastName)
-//        Assert.assertFalse(lastName is KMutableProperty1)
-//        Assert.assertEquals(lastName!!.returnType.javaType.typeName, "java.lang.String")
-//
-//        val age = Person::class.memberProperties.firstOrNull { it.name == "age" }
-//        Assert.assertNotNull(age)
-//        Assert.assertTrue(age is KMutableProperty1)
-//        Assert.assertEquals(age!!.returnType.javaType.typeName, "int")
+        val firstName = Person::class.memberProperties.firstOrNull { it.name == "firstName" }
+        Assert.assertNotNull(firstName)
+        Assert.assertFalse(firstName is KMutableProperty1)
+        Assert.assertEquals(firstName!!.returnType.javaType.typeName, "java.lang.String")
+
+        val lastName = Person::class.memberProperties.firstOrNull { it.name == "lastName" }
+        Assert.assertNotNull(lastName)
+        Assert.assertFalse(lastName is KMutableProperty1)
+        Assert.assertEquals(lastName!!.returnType.javaType.typeName, "java.lang.String")
+
+        val age = Person::class.memberProperties.firstOrNull { it.name == "age" }
+        Assert.assertNotNull(age)
+        Assert.assertTrue(age is KMutableProperty1)
+        Assert.assertEquals(age!!.returnType.javaType.typeName, "int")
     }
 }

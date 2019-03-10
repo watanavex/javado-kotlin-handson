@@ -19,7 +19,8 @@ class PracticeTest {
 
         */
 
-//        Assert.assertEquals(num, 3)
+        val num = 3
+        Assert.assertEquals(num, 3)
     }
 
     @Test
@@ -34,20 +35,20 @@ class PracticeTest {
 
         */
 
-//        num = 6
-//        Assert.assertEquals(num, 6)
+        var num = 6
+        Assert.assertEquals(num, 6)
     }
 
     @Test
     fun `型推論を試してみる`() {
         /*** write here  ***/
-//        val intValue = // Intのリテラルを書く
-//        val longValue = // Longのリテラルを書く
-//        val stringValue = // Stringのリテラルを書く
-//
-//        Assert.assertTrue(intValue is Int)
-//        Assert.assertTrue(longValue is Long)
-//        Assert.assertTrue(stringValue is String)
+        val intValue = 0// Intのリテラルを書く
+        val longValue = 0L// Longのリテラルを書く
+        val stringValue = ""// Stringのリテラルを書く
+
+        Assert.assertTrue(intValue is Int)
+        Assert.assertTrue(longValue is Long)
+        Assert.assertTrue(stringValue is String)
     }
 
     @Test
@@ -65,9 +66,11 @@ class PracticeTest {
         String str = practice.getString();
 
         */
+        val num = practice.getNum()
+        val str = practice.getString()
 
-//        Assert.assertTrue(num is Int)
-//        Assert.assertTrue(str is String)
+        Assert.assertTrue(num is Int)
+        Assert.assertTrue(str is String)
     }
 
     @Test
@@ -138,10 +141,10 @@ class PracticeTest {
         List<Integer> list = Arrays.asList(0, 2, 4);
 
         */
-
-//        Assert.assertEquals(list[0], 0)
-//        Assert.assertEquals(list[1], 2)
-//        Assert.assertEquals(list[2], 4)
+        val list = listOf(0, 2, 4)
+        Assert.assertEquals(list[0], 0)
+        Assert.assertEquals(list[1], 2)
+        Assert.assertEquals(list[2], 4)
     }
 
     @Test
@@ -158,9 +161,12 @@ class PracticeTest {
         list.add(4);
 
         */
-
-//        Assert.assertEquals(list[0], 0)
-//        Assert.assertEquals(list[1], 2)
-//        Assert.assertEquals(list[2], 4)
+        val list = mutableListOf<Int>()
+        list.add(0)
+        list.add(2)
+        list.add(4)
+        Assert.assertEquals(list[0], 0)
+        Assert.assertEquals(list[1], 2)
+        Assert.assertEquals(list[2], 4)
     }
 }

@@ -10,11 +10,4 @@ open class Greeter {
     open fun greet(): String = "Hello!"
 }
 
-fun hello(name: String?): String {
-    if (name != null) {
-        return "Hello, $name"
-    }
-    else {
-        return "Hello, World"
-    }
-}
+fun hello(name: String?): String = "Hello, ${name ?: "World"}"

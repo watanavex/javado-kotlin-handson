@@ -16,7 +16,8 @@ class PracticeTest {
 
         */
 
-//        Assert.assertNull(num)
+        val num: Int? = null
+        Assert.assertNull(num)
     }
 
     @Test
@@ -26,7 +27,8 @@ class PracticeTest {
         // 変数numをif式を使ってスマートキャストし、
         // 下のコードがコンパイルできるようにしてみる
 
-//        val length = str.length
+        if (str == null) { return }
+        val length = str.length
     }
 
     @Test
@@ -35,7 +37,7 @@ class PracticeTest {
         val greeter = getGreeter()
 
         // 下のコードを安全呼び出しに書き換えてみる
-//        greeter.greet()
+        greeter?.greet()
     }
 
     @Test
@@ -44,7 +46,7 @@ class PracticeTest {
         val greeter = getGreeter()
 
         // 下のコードを非null表明に書き換えてみる
-//        greeter.greet()
+        greeter!!.greet()
     }
 
     @Test
@@ -60,11 +62,11 @@ class PracticeTest {
         }
 
         */
+        (any as? Greeter)?.greet()
     }
 
     @Test
     fun `エルビス演算子を使ってみる`() {
-        /*** write here  ***/
         // 関数helloをエルビス演算子を使った実装に書き換えてみる
         val str = hello(null)
         Assert.assertEquals(str, "Hello, World")

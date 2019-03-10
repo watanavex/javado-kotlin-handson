@@ -31,7 +31,8 @@ class PracticeTest {
         }
 
         */
-//        Assert.assertEquals(Employee::class.superclasses.first(), Person::class)
+
+        Assert.assertEquals(Employee::class.superclasses.first(), Person::class)
     }
 
     @Test
@@ -45,17 +46,17 @@ class PracticeTest {
         class Employee extends Person {
 
             static Employee getDummy() {
-                return new Employee("Duke", "Higuma", 3, 0);
+                return new Employee(0, "Duke", "Higuma", 3);
             }
         }
 
         */
 
 
-//        val dummy = Employee::class.companionObject!!::memberProperties.get().firstOrNull { it.name == "dummy" }
-//        Assert.assertNotNull(dummy)
-//        Assert.assertFalse(dummy is KMutableProperty1)
-//        Assert.assertEquals(dummy!!.returnType.javaType.typeName, "jp.watanave.githubsample.practice5.Employee")
+        val dummy = Employee::class.companionObject!!::memberProperties.get().firstOrNull { it.name == "dummy" }
+        Assert.assertNotNull(dummy)
+        Assert.assertFalse(dummy is KMutableProperty1)
+        Assert.assertEquals(dummy!!.returnType.javaType.typeName, "jp.watanave.githubsample.practice5.Employee")
     }
 
     @Test
@@ -72,16 +73,16 @@ class PracticeTest {
 
         */
 
-//        Assert.assertEquals(Greeter.greet(), "Hello, World")
+        Assert.assertEquals(Greeter.greet(), "Hello, World")
     }
 
     @Test
     fun `dataクラスを試してみる`() {
         // このテストが通るようにSizeクラスを実装してみる
 
-//        val size1 = Size(width = 200, height = 200)
-//        val size2 = Size(width = 200, height = 200)
-//        Assert.assertEquals(size1, size2)
+        val size1 = Size(width = 200, height = 200)
+        val size2 = Size(width = 200, height = 200)
+        Assert.assertEquals(size1, size2)
     }
 
     @Test
@@ -93,7 +94,6 @@ class PracticeTest {
         val resultString = when (result) {
             is Success -> { result.value.toString() }
             is Failure -> { result.throwable.toString() }
-            else -> { throw Exception() }
         }
     }
 
@@ -112,6 +112,6 @@ class PracticeTest {
         // カスタムゲッターを使い、firstNameとlastNameを空白スペースで結合して返してみる
 
         val person = Person("アンドリー", "ブレスラフ", 18)
-//        Assert.assertEquals(person.fullName, "アンドリー ブレスラフ")
+        Assert.assertEquals(person.fullName, "アンドリー ブレスラフ")
     }
 }

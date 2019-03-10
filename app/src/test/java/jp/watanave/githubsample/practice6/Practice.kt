@@ -3,10 +3,14 @@ package jp.watanave.githubsample.practice6
 class View {
     companion object {
         fun createSample(): View {
-            val view = View()
-            val child = View()
-            view.addView(child)
-            return view
+            return View().apply {
+                val child = View()
+                this.addView(child)
+            }
+//            return View().also {
+//                val child = View()
+//                it.addView(child)
+//            }
         }
     }
 
@@ -19,8 +23,11 @@ class View {
 
     fun hiddenGrandChild() {
         val childView = childView
-        childView?.apply {
-            childView.isHidden = true
+//        childView?.apply {
+//            childView.isHidden = true
+//        }
+        childView?.also {
+            it.childView?.isHidden = true
         }
     }
 }

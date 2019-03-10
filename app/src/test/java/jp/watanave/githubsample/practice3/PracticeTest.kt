@@ -19,8 +19,8 @@ class PracticeTest {
 
         */
 
-//        val result = hello("Kotlin")
-//        Assert.assertEquals(result, "Hello, Kotlin")
+        val result = hello("Kotlin")
+        Assert.assertEquals(result, "Hello, Kotlin")
     }
 
     @Test
@@ -28,8 +28,8 @@ class PracticeTest {
         // デフォルト引数を指定してみる
         // 上のhello関数のデフォルト引数をWorldにしてみる
 
-//        val result = hello()
-//        Assert.assertEquals(result, "Hello, World")
+        val result = hello()
+        Assert.assertEquals(result, "Hello, World")
     }
 
     @Test
@@ -37,8 +37,8 @@ class PracticeTest {
         // 単一式関数を書いてみる
         // 上のhello関数を単一式関数に書き直してみる
 
-//        val result = hello()
-//        Assert.assertEquals(result, "Hello, World")
+        val result = hello()
+        Assert.assertEquals(result, "Hello, World")
     }
 
     @Test
@@ -54,7 +54,7 @@ class PracticeTest {
 
         */
 
-        var lambda: ((String)->String)? = null
+        var lambda: ((String)->String)? = { "Hello, $it" }
         Assert.assertEquals(lambda?.invoke("Kotlin"), "Hello, Kotlin")
     }
 
@@ -64,7 +64,7 @@ class PracticeTest {
         // Int型を拡張して、自分の1.08倍の値を返す
         // includeTaxを定義してみましょう
 
-//        Assert.assertEquals(100.includeTax(), 108)
+        Assert.assertEquals(100.includeTax(), 108)
     }
 }
 
