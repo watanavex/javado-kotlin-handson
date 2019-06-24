@@ -4,10 +4,9 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
-import androidx.databinding.DataBindingUtil
 import jp.watanave.githubsample.R
-import jp.watanave.githubsample.databinding.DialogDetailBinding
 import jp.watanave.githubsample.util.setImageSource
+import kotlinx.android.synthetic.main.dialog_detail.view.*
 
 class DetailDialogFragment: androidx.fragment.app.DialogFragment() {
 
@@ -31,19 +30,15 @@ class DetailDialogFragment: androidx.fragment.app.DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(this.activity!!)
 
-        val binding = DataBindingUtil.inflate<DialogDetailBinding>(
-            LayoutInflater.from(this.activity),
-            R.layout.dialog_detail,
-            null,
-            false
-        )
-        builder.setView(binding.root)
+        val view = LayoutInflater.from(this.activity)
+            .inflate(R.layout.dialog_detail, null)
+        builder.setView(view)
         builder.setPositiveButton("Close") { _, _ -> }
 
-        binding.repoNameTextView.text = this.arguments?.getString(KEY_REPOSITORY_NAME)
-        binding.ownerNameTextView.text = this.arguments?.getString(KEY_REPOSITORY_OWNER)
-        binding.descTextView.text = this.arguments?.getString(KEY_REPOSITORY_DESCRIPTION)
-        binding.imageView.setImageSource(this.arguments?.getString(KEY_REPOSITORY_AVATAR_URL))
+        view.repoNameTextView.text = this.arguments?.getString(KEY_REPOSITORY_NAME)
+        view.ownerNameTextView.text = this.arguments?.getString(KEY_REPOSITORY_OWNER)
+        view.descTextView.text = this.arguments?.getString(KEY_REPOSITORY_DESCRIPTION)
+        view.imageView.setImageSource(this.arguments?.getString(KEY_REPOSITORY_AVATAR_URL))
 
         return builder.create()
     }

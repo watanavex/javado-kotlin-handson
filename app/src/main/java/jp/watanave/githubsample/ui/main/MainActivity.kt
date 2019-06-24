@@ -1,71 +1,85 @@
 package jp.watanave.githubsample.ui.main
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import jp.watanave.githubsample.App
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.GsonBuilder
 import jp.watanave.githubsample.R
+import jp.watanave.githubsample.data.Api
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    // adapterはリストデータとリストビューの橋渡しをするオブジェクトです
     private val adapter = RepositoryListAdapter()
 
-    // この関数はリストビュー(recyclerView)の諸々の設定です
     private fun setupRecyclerView() {
         this.recyclerView.adapter = this.adapter
-        this.recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        this.recyclerView.layoutManager = LinearLayoutManager(this)
         this.recyclerView.addItemDecoration(
             androidx.recyclerview.widget.DividerItemDecoration(
                 this,
                 androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
             )
         )
-        // TODO: [6] 2で定義したコールバックを登録する
-        // コールバックの中では、ダイアログを出す
-        /* こんな感じ
-            val fragment = DetailDialogFragment.newInstance(repository.name, repository.owner.login, repository.description, repository.owner.avatarUrl)
-            fragment.show(this.supportFragmentManager, DetailDialogFragment::class.simpleName)
-         */
+        this.adapter.didSelectItem = { repository ->
+            val fragment = DetailDialogFragment.newInstance(
+                repository.name,
+                repository.owner.login,
+                repository.description,
+                repository.owner.avatarUrl)
+            fragment.show(this.supportFragmentManager, DetailDialogFragment::class.qualifiedName)
+        }
     }
 
-    // 画面が作成された時にシステムから呼び出されるコールバックです
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_main)
         this.setupRecyclerView()
 
-        // TODO: [1] 検索ボタンがタップされた時の動作を実装する
-        /*
-        ボタンには this.searchButton でアクセス可能。
-        タップされた時の動作はボタンのsetOnClickListener関数で設定する
-        ボタンがタップされたらsearchRepositoryメソッドを呼びましょう
-        検索文字列はthis.editTextから取得します
-         */
-    }
-
-    private fun searchRepository(searchWord: String) {
-        // 検索が開始する前にプログレスをくるくる回す
-        recyclerView.visibility = View.INVISIBLE
-        progressBar.visibility = View.VISIBLE
-
-        // Kotlin coroutineを使ってネットワーク通信中にスレッドをブロックさせないようにする
-        GlobalScope.launch {
-            val api = App.instance.api
-
-            // TODO: [2] 検索ボタンがタップされた時の動作を実装する
-            /*
-            Apiのsearchメソッドでgithubリポジトリを検索する
-            検索結果をadapterに渡しましょう
-             */
-            runOnUiThread {
-                adapter.refreshData(emptyList())
+        this.editText.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                when  {
+                    s == null -> searchButton.isEnabled = false
+                    s.count() < 3 -> searchButton.isEnabled = false
+                    else -> searchButton.isEnabled = true
+                }
             }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
-            // TODO: [3] 検索が完了したらprogressBarを隠してrecyclerViewを表示しましょう
+        this.searchButton.setOnClickListener {
+            val gson = GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create()
+            val retrofit = Retrofit
+                .Builder()
+                .baseUrl("https://api.github.com")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+            val api = retrofit.create(Api::class.java)
+
+            this.recyclerView.visibility = View.INVISIBLE
+            this.progressBar.visibility = View.VISIBLE
+
+            GlobalScope.launch {
+                val response = api.search(editText.text.toString()).execute()
+                val items = response.body()?.items ?: emptyList()
+
+                runOnUiThread {
+                    adapter.refreshData(items)
+                    recyclerView.visibility = View.VISIBLE
+                    progressBar.visibility = View.INVISIBLE
+                }
+            }
         }
     }
 }

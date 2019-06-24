@@ -1,20 +1,16 @@
 package jp.watanave.githubsample.ui.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import jp.watanave.githubsample.R
 import jp.watanave.githubsample.data.Repository
-import jp.watanave.githubsample.databinding.RepositoryItemBinding
+import kotlinx.android.synthetic.main.repository_item.view.*
 
 class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<RepositoryListAdapter.ViewHolder>() {
 
     private var repositories = emptyList<Repository>()
-
-    // TODO: [4] リストビューのアイテムがタップされた時のコールバックを登録できるようにする
-    /*
-    Repository型を引数に受ける関数型をプロパティで定義しておく
-    */
+    var didSelectItem: ((Repository)->Unit)? = null
 
     fun refreshData(repositories: List<Repository>) {
         this.repositories = repositories
@@ -22,18 +18,14 @@ class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<R
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = DataBindingUtil.inflate<RepositoryItemBinding>(
-            LayoutInflater.from(parent.context),
-            R.layout.repository_item,
-            parent,
-            false
-        )
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.repository_item, parent, false)
 
-        val viewHolder = ViewHolder(binding)
-        binding.root.setOnClickListener {
+        val viewHolder = ViewHolder(view)
+        view.root.setOnClickListener {
             val index = viewHolder.adapterPosition
             val repository = this.repositories[index]
-            // TODO: [5] 2で定義したコールバックを呼び出す
+            this.didSelectItem?.invoke(repository)
         }
 
         return viewHolder
@@ -43,8 +35,8 @@ class RepositoryListAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<R
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val repo = this.repositories[position]
-        holder.binding.textView.text = repo.name
+        holder.view.textView.text = repo.name
     }
 
-    class ViewHolder(val binding: RepositoryItemBinding): androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val view: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(view)
 }
