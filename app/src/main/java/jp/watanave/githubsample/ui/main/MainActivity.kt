@@ -71,13 +71,22 @@ class MainActivity : AppCompatActivity() {
             this.progressBar.visibility = View.VISIBLE
 
             GlobalScope.launch {
-                val response = api.search(editText.text.toString()).execute()
-                val items = response.body()?.items ?: emptyList()
+                try {
+                    val response = api.search(editText.text.toString()).execute()
+                    val items = response.body()?.items ?: emptyList()
 
-                runOnUiThread {
-                    adapter.refreshData(items)
-                    recyclerView.visibility = View.VISIBLE
-                    progressBar.visibility = View.INVISIBLE
+                    runOnUiThread {
+                        adapter.refreshData(items)
+                        recyclerView.visibility = View.VISIBLE
+                        progressBar.visibility = View.INVISIBLE
+                    }
+                }
+                catch (e: Throwable) {
+                    runOnUiThread {
+                        messageTextView.text = e.localizedMessage
+                        recyclerView.visibility = View.VISIBLE
+                        progressBar.visibility = View.INVISIBLE
+                    }
                 }
             }
         }
