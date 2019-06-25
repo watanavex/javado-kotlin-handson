@@ -6,15 +6,11 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.GsonBuilder
+import jp.watanave.githubsample.App
 import jp.watanave.githubsample.R
-import jp.watanave.githubsample.data.Api
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,15 +53,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         this.searchButton.setOnClickListener {
-            val gson = GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create()
-            val retrofit = Retrofit
-                .Builder()
-                .baseUrl("https://api.github.com")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build()
-            val api = retrofit.create(Api::class.java)
+            val api = App.instance.api
 
             this.recyclerView.visibility = View.INVISIBLE
             this.progressBar.visibility = View.VISIBLE
