@@ -45,6 +45,7 @@ class StubApi: Api {
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                     .create()
                 val response = gson.fromJson(this@StubApi.dummuy, RepositoryResponse::class.java)
+                Thread.sleep(1_000)
                 return Response.success(response)
             }
 
