@@ -6,13 +6,17 @@ import com.google.gson.GsonBuilder
 import jp.watanave.githubsample.data.Api
 import jp.watanave.githubsample.data.GithubApi
 import jp.watanave.githubsample.ui.main.MainViewModel
+import jp.watanave.githubsample.util.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 open class App: Application() {
 
     open val viewModel: MainViewModel by lazy {
-        MainViewModel(this.githubApi)
+        MainViewModel(this.githubApi, this.dispatchers)
+    }
+    open val dispatchers: Dispatchers by lazy {
+        Dispatchers()
     }
     open val githubApi: GithubApi by lazy {
         val gson = GsonBuilder()
