@@ -2,9 +2,10 @@ package jp.watanave.githubsample
 
 import android.os.Build
 import android.view.View
-import io.mockk.every
-import jp.watanave.githubsample.data.RepositoryResponse
+import io.mockk.verify
 import jp.watanave.githubsample.ui.main.MainActivity
+import jp.watanave.githubsample.ui.main.MainState
+import jp.watanave.githubsample.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.junit.Assert
 import org.junit.Before
@@ -14,7 +15,6 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
-import java.util.concurrent.TimeoutException
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P], application = TestApp::class)
@@ -22,9 +22,11 @@ class MainActivityTest {
 
     lateinit var activityController: ActivityController<MainActivity>
     lateinit var activity: MainActivity
+    lateinit var viewModel: MainViewModel
 
     @Before
     fun setup() {
+        this.viewModel = App.instance.viewModel
         this.activityController = Robolectric.buildActivity(MainActivity::class.java)
         this.activity = this.activityController.get()
 
@@ -46,55 +48,61 @@ class MainActivityTest {
     }
 
     @Test
-    fun `検索文字が3文字未満だと検索ボタンがDisableになること`() {
+    fun `検索文字を変更したらViewModelのcheckSearchableが呼ばれること`() {
         this.activity.editText.text.insert(0, "ho")
+
+        verify(exactly = 1) { viewModel.checkSearchable("ho") }
+    }
+
+    @Test
+    fun `検索ボタンをタップしたらViewModelのsearchRepositoryが呼ばれること`() {
+        val state = MainState(true, false, emptyList(), "")
+        this.activity.render(state)
+        this.activity.editText.text.insert(0, "hoge")
+
+        this.activity.searchButton.performClick()
+        verify(exactly = 1) { viewModel.searchRepository("hoge") }
+    }
+
+    @Test
+    fun `検索不可状態だと検索ボタンがDisableになること`() {
+        val state = MainState(false, false, emptyList(), "")
+        this.activity.render(state)
+
         Assert.assertEquals(false, this.activity.searchButton.isEnabled)
     }
 
     @Test
-    fun `検索文字が3文字以上だと検索ボタンがEnableになること`() {
-        this.activity.editText.text.insert(0, "hogehoge")
+    fun `検索可能状態だと検索ボタンがEnableになること`() {
+        val state = MainState(true, false, emptyList(), "")
+        this.activity.render(state)
+
         Assert.assertEquals(true, this.activity.searchButton.isEnabled)
     }
 
     @Test
-    fun `検索ボタンを押すとProgressBarがくるくるすること`() {
-        this.activity.editText.text.insert(0, "hogehoge")
-        this.activity.searchButton.performClick()
-
-        every { App.instance.githubApi.search(any()) } returns RepositoryResponse(emptyList())
+    fun `検索中はProgressBarがくるくるすること`() {
+        val state = MainState(true, true, emptyList(), "")
+        this.activity.render(state)
 
         Assert.assertEquals(View.VISIBLE, this.activity.progressBar.visibility)
         Assert.assertEquals(View.INVISIBLE, this.activity.recyclerView.visibility)
     }
 
-    //
-    // タイミング依存の問題はいまだに残る 😥
-    //
     @Test
-    fun `検索が終わるとProgressBarが消えること`() {
-        this.activity.editText.text.insert(0, "hogehoge")
-        this.activity.searchButton.performClick()
-
-        every { App.instance.githubApi.search(any()) } returns RepositoryResponse(emptyList())
+    fun `検索中でなければProgressBarが消えること`() {
+        val state = MainState(true, false, emptyList(), "")
+        this.activity.render(state)
 
         Assert.assertEquals(View.INVISIBLE, this.activity.progressBar.visibility)
         Assert.assertEquals(View.VISIBLE, this.activity.recyclerView.visibility)
     }
 
-    //
-    // どうやってエラーにする？
-    //
     @Test
-    fun `検索に失敗するとエラーメッセージが表示されること`() {
-        this.activity.editText.text.insert(0, "hogehoge")
-        this.activity.searchButton.performClick()
+    fun `検索中でエラーが発生するとメッセージを表示すること`() {
+        val state = MainState(true, false, emptyList(), "error message")
+        this.activity.render(state)
 
-        val exception = TimeoutException()
-        every { App.instance.githubApi.search(any()) } throws exception
-
-        Assert.assertEquals(View.INVISIBLE, this.activity.progressBar.visibility)
-        Assert.assertEquals(View.VISIBLE, this.activity.recyclerView.visibility)
-        Assert.assertEquals(exception.localizedMessage, this.activity.messageTextView.text)
+        Assert.assertEquals("error message", this.activity.messageTextView.text)
     }
 }
