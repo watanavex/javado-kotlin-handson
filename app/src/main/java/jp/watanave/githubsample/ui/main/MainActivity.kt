@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import jp.watanave.githubsample.App
 import jp.watanave.githubsample.R
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private val adapter = RepositoryListAdapter()
+    val viewModel: MainViewModel by lazy {
+        App.instance.viewModel
+    }
 
     private fun setupRecyclerView() {
         this.recyclerView.adapter = this.adapter
@@ -40,43 +41,43 @@ class MainActivity : AppCompatActivity() {
         this.setContentView(R.layout.activity_main)
         this.setupRecyclerView()
 
+        //
+        // ViewModelへ命令
+        //
         this.editText.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                when  {
-                    s == null -> searchButton.isEnabled = false
-                    s.count() < 3 -> searchButton.isEnabled = false
-                    else -> searchButton.isEnabled = true
-                }
+                viewModel.checkSearchable(s.toString())
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
         this.searchButton.setOnClickListener {
-            val githubApi = App.instance.githubApi
+            viewModel.searchRepository(this.editText.text.toString())
+        }
 
+        //
+        // Stateで表示更新
+        //
+        this.viewModel.listener = object: StateChangeListener {
+            override fun onChange(state: MainState) = render(state)
+        }
+    }
+
+    fun render(state: MainState) {
+        this.searchButton.isEnabled = state.searchable
+
+        this.messageTextView.text = state.message
+
+        if (state.isLoading) {
             this.recyclerView.visibility = View.INVISIBLE
             this.progressBar.visibility = View.VISIBLE
-
-            GlobalScope.launch {
-                try {
-                    val response = githubApi.search(editText.text.toString())
-                    val items = response?.items ?: emptyList()
-
-                    runOnUiThread {
-                        adapter.refreshData(items)
-                        recyclerView.visibility = View.VISIBLE
-                        progressBar.visibility = View.INVISIBLE
-                    }
-                }
-                catch (e: Throwable) {
-                    runOnUiThread {
-                        messageTextView.text = e.localizedMessage
-                        recyclerView.visibility = View.VISIBLE
-                        progressBar.visibility = View.INVISIBLE
-                    }
-                }
-            }
         }
+        else {
+            this.recyclerView.visibility = View.VISIBLE
+            this.progressBar.visibility = View.INVISIBLE
+        }
+
+        this.adapter.refreshData(state.repositories)
     }
 }
