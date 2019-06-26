@@ -53,15 +53,15 @@ class MainActivity : AppCompatActivity() {
         })
 
         this.searchButton.setOnClickListener {
-            val api = App.instance.api
+            val githubApi = App.instance.githubApi
 
             this.recyclerView.visibility = View.INVISIBLE
             this.progressBar.visibility = View.VISIBLE
 
             GlobalScope.launch {
                 try {
-                    val response = api.search(editText.text.toString()).execute()
-                    val items = response.body()?.items ?: emptyList()
+                    val response = githubApi.search(editText.text.toString())
+                    val items = response?.items ?: emptyList()
 
                     runOnUiThread {
                         adapter.refreshData(items)
