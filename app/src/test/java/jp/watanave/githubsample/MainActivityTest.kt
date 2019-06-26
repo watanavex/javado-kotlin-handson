@@ -2,7 +2,8 @@ package jp.watanave.githubsample
 
 import android.os.Build
 import android.view.View
-import io.mockk.mockk
+import io.mockk.every
+import jp.watanave.githubsample.data.RepositoryResponse
 import jp.watanave.githubsample.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.junit.Assert
@@ -13,6 +14,7 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
+import java.util.concurrent.TimeoutException
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P], application = TestApp::class)
@@ -60,6 +62,8 @@ class MainActivityTest {
         this.activity.editText.text.insert(0, "hogehoge")
         this.activity.searchButton.performClick()
 
+        every { App.instance.githubApi.search(any()) } returns RepositoryResponse(emptyList())
+
         Assert.assertEquals(View.VISIBLE, this.activity.progressBar.visibility)
         Assert.assertEquals(View.INVISIBLE, this.activity.recyclerView.visibility)
     }
@@ -72,7 +76,7 @@ class MainActivityTest {
         this.activity.editText.text.insert(0, "hogehoge")
         this.activity.searchButton.performClick()
 
-        Thread.sleep(1_500)
+        every { App.instance.githubApi.search(any()) } returns RepositoryResponse(emptyList())
 
         Assert.assertEquals(View.INVISIBLE, this.activity.progressBar.visibility)
         Assert.assertEquals(View.VISIBLE, this.activity.recyclerView.visibility)
@@ -83,6 +87,14 @@ class MainActivityTest {
     //
     @Test
     fun `検索に失敗するとエラーメッセージが表示されること`() {
-        // 🤔
+        this.activity.editText.text.insert(0, "hogehoge")
+        this.activity.searchButton.performClick()
+
+        val exception = TimeoutException()
+        every { App.instance.githubApi.search(any()) } throws exception
+
+        Assert.assertEquals(View.INVISIBLE, this.activity.progressBar.visibility)
+        Assert.assertEquals(View.VISIBLE, this.activity.recyclerView.visibility)
+        Assert.assertEquals(exception.localizedMessage, this.activity.messageTextView.text)
     }
 }

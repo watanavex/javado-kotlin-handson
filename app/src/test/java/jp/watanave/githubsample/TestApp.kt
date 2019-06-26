@@ -1,9 +1,9 @@
 package jp.watanave.githubsample
 
-import jp.watanave.githubsample.data.Api
-import jp.watanave.githubsample.data.StubApi
+import io.mockk.mockk
+import jp.watanave.githubsample.data.GithubApi
 
 class TestApp: App() {
-    override val api: Api
-        get() = StubApi()
+    override val githubApi: GithubApi
+        get() = mockk()
 }
