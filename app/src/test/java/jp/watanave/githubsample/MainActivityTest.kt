@@ -2,6 +2,7 @@ package jp.watanave.githubsample
 
 import android.os.Build
 import android.view.View
+import io.mockk.mockk
 import jp.watanave.githubsample.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.junit.Assert
@@ -14,7 +15,7 @@ import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.P])
+@Config(sdk = [Build.VERSION_CODES.P], application = TestApp::class)
 class MainActivityTest {
 
     lateinit var activityController: ActivityController<MainActivity>
@@ -54,20 +55,27 @@ class MainActivityTest {
         Assert.assertEquals(true, this.activity.searchButton.isEnabled)
     }
 
-    //
-    // くるくる終わるタイミングでテストの結果も変わる？
-    //
     @Test
     fun `検索ボタンを押すとProgressBarがくるくるすること`() {
-        // 🤔
+        this.activity.editText.text.insert(0, "hogehoge")
+        this.activity.searchButton.performClick()
+
+        Assert.assertEquals(View.VISIBLE, this.activity.progressBar.visibility)
+        Assert.assertEquals(View.INVISIBLE, this.activity.recyclerView.visibility)
     }
 
     //
-    // 検索が成功するとも限らない？！ githubが落ちてるとか
+    // タイミング依存の問題はいまだに残る 😥
     //
     @Test
     fun `検索が終わるとProgressBarが消えること`() {
-        // 🤔
+        this.activity.editText.text.insert(0, "hogehoge")
+        this.activity.searchButton.performClick()
+
+        Thread.sleep(1_500)
+
+        Assert.assertEquals(View.INVISIBLE, this.activity.progressBar.visibility)
+        Assert.assertEquals(View.VISIBLE, this.activity.recyclerView.visibility)
     }
 
     //
